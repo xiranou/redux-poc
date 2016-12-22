@@ -6,6 +6,12 @@ function mookie() {
   }
 }
 
+function incrementCounter() {
+  return {
+    type: 'INCREMENT'
+  }
+}
+
 function reducer(state = Immutable.Map(), action) {
   switch (action.type) {
   case 'MOOKIE':
@@ -21,12 +27,15 @@ function run(state, dispatch) {
   dispatch(mookie());
 }
 
+function increment(state, dispatch) {
+  dispatch(incrementCounter());
+}
 
 module.exports = {
-  actions: {
-    mookie
+  hook: {
+    run,
+    increment
   },
   reducer,
-  run,
   name: 'mookie'
 }

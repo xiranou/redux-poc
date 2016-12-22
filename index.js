@@ -1,14 +1,22 @@
 const redux = require('redux');
 const { createStore, combineReducers } = redux;
 const Immutable = require('immutable');
-const counter = require('./reducers/counter');
+const reducers = require('./reducers');
 const actions = require('./actions');
 const automator = require('./automator');
+const plugins = require('./plugins');
 
-const reducer = combineReducers({ counter });
+const mergedReducers = reducers.merge(plugins.reducers).toJS();
+
+const reducer = combineReducers(mergedReducers);
 const store = createStore(reducer);
 
-store.subscribe( () => automator.listen(Immutable.Map(store.getState()), store.dispatch) );
+function getStoreState() {
+  return Immutable.Map(store.getState());
+}
 
+store.subscribe( () => automator.listen(getStoreState(), store.dispatch) );
 
 store.dispatch(actions.increment());
+
+plugins.modules.get('mookie').increment(getStoreState().get('mookie'), store.dispatch);
