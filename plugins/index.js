@@ -4,6 +4,11 @@ const exposedActions = require('../actions').exposedActions;
 
 const modules = Immutable.List([mookie]);
 
+function setup(appStore) {
+  store = appStore;
+  isSetup = true;
+}
+
 function getReducers() {
   return Immutable.Map(modules.map(v => [v.name, v.reducer]));
 }

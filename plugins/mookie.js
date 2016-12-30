@@ -2,8 +2,7 @@ const Immutable = require('immutable');
 const initialState = Immutable.Map({
   mookie: null
 })
-const MOOKIE = 'MOOKIE';
-const actions = Immutable.List([MOOKIE]);
+const MOOKIE = 'AUTOMATOR/PLUGINS/MOOKIE';
 
 function mookie() {
   return {
@@ -23,15 +22,6 @@ function decrementCounter() {
   }
 }
 
-function reducer(state = initialState, action) {
-  switch (action.type) {
-  case 'MOOKIE':
-    return state.update('mookie', () => 'mookie');
-  default:
-    return state;
-  }
-}
-
 function run(dispatch, state) {
   dispatch(mookie());
 }
@@ -43,6 +33,15 @@ function increment(dispatch, state) {
 function decrement(dispatch, state) {
   // SHOULD DO NOTHING ON THIS TO DISPATCH
   dispatch(decrementCounter());
+}
+
+function reducer(state = initialState, action) {
+  switch (action.type) {
+  case 'MOOKIE':
+    return state.update('mookie', () => 'mookie');
+  default:
+    return state;
+  }
 }
 
 module.exports = {
