@@ -1,5 +1,5 @@
 function willUpdate(state, dispatch) {
-  console.log(`COUNTER: ${state.get('count')}`);
+  console.log(`WILL UPDATE`);
 }
 
 module.exports = {

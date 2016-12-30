@@ -17,6 +17,13 @@ function getStoreState() {
 
 store.subscribe( () => automator.listen(getStoreState(), store.dispatch) );
 
-store.dispatch(actions.increment());
+// call to plugin actions
+const mookie = plugins.modules.get('mookie');
+const pluginDispatch = plugins.dispatch.bind(null, store.dispatch);
 
-plugins.modules.get('mookie').increment(getStoreState().get('mookie'), store.dispatch);
+mookie.increment(pluginDispatch);
+console.log(getStoreState());
+mookie.decrement(pluginDispatch);
+console.log(getStoreState());
+mookie.run(pluginDispatch);
+console.log(getStoreState());

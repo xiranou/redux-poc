@@ -7,7 +7,6 @@ const initialState = Immutable.Map({
 module.exports = (state = initialState, action) => {
   switch (action.type) {
   case 'INCREMENT':
-    console.log(`STATE: ${state}`);
     return state.update('count', v => v + 1);
   case 'DECREMENT':
     return state.update('count', v => v - 1);
