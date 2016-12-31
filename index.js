@@ -1,6 +1,6 @@
 const Immutable = require('immutable');
-const reducer = require('./redux/reducer');
-const createStore = require('./redux/create');
+const reducer = require('./src/redux/reducer');
+const createStore = require('./src/redux/create');
 const setupAutomator = require('./src');
 
 const store = createStore(reducer);

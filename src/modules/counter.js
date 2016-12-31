@@ -1,4 +1,4 @@
-const actionCreators = require('../../redux/modules/counter').actionCreators;
+const actionCreators = require('../redux/modules/counter').actionCreators;
 
 function willUpdate(dispatch, state) {
   console.log(state);
