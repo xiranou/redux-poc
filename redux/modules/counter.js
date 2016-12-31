@@ -5,15 +5,17 @@ const INCREMENT = 'counter/increment';
 const DECREMENT = 'counter/decrement';
 
 // action creators
-function increment() {
+function increment(amount = 1) {
   return {
-    type: INCREMENT
+    type: INCREMENT,
+    amount
   };
 }
 
-function decrement() {
+function decrement(amount = 1) {
   return {
-    type: DECREMENT
+    type: DECREMENT,
+    amount
   };
 }
 
@@ -21,9 +23,9 @@ function decrement() {
 function reducer(state = initialState, action = {}) {
   switch(action.type) {
     case INCREMENT:
-      return state.update('count', v => v + 1);
+      return state.update('count', v => v + action.amount);
     case DECREMENT:
-      return state.udpate('count', v => v - 1);
+      return state.update('count', v => v - action.amount);
     default:
       return state;
   }
