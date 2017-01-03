@@ -29,7 +29,9 @@ function increment(amount = 1) {
 
 function decrement(amount) {
   return dispatch => {
-    dispatch(_decrement(amount));
+    setTimeout(() => {
+      dispatch(_decrement(amount));
+    }, 200);
   }
 }
 

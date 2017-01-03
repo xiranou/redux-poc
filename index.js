@@ -7,6 +7,10 @@ const store = createStore(reducer);
 
 const automator = setupAutomator(store);
 
-automator.modules.counter.increment();
-automator.modules.counter.increment(3);
-automator.modules.counter.decrement(2);
+automator.modules.counter.increment()
+.then(() => {
+  automator.modules.counter.increment(3);
+})
+.then(() => {
+  automator.modules.counter.decrement(2);
+});
