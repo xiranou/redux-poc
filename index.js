@@ -7,6 +7,7 @@ const store = createStore(reducer);
 const automator = setupAutomator(store);
 const { counter, chat } = automator.modules;
 
+// Example 1
 // counter.increaseThenDecrease(1)
 // .then(() => {
 //   console.log('======')
@@ -15,9 +16,12 @@ const { counter, chat } = automator.modules;
 //   .then(() => counter.decrease(2));
 // });
 
+// Example 2
 const slackPayload = {
   user: '@UUUUU',
   message: 'some message'
 };
 
-chat.sendMessage(slackPayload.message);
+chat.sendMessage(slackPayload.message)
+.then(() => counter.increase(1))
+.then(() => counter.decrease(1));
