@@ -1,12 +1,12 @@
 const { actionCreators } = require('../redux/modules/counter');
 
-function willUpdate(dispatch, state) {
+function update(dispatch, state) {
   console.log(state);
-  console.log(`WILL UPDATE WITH NEW COUNT: ${state.get('count')}`);
+  console.log(`UPDATE WITH NEW COUNT: ${state.get('count')}`);
 }
 
 module.exports = {
-  willUpdate,
+  update,
   actionCreators,
   someProp: 'someProp'
 }

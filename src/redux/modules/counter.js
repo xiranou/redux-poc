@@ -23,7 +23,7 @@ function increment(amount = 1) {
   return dispatch => {
     setTimeout(() => {
       dispatch(_increment(amount));
-    }, 200);
+    }, 300);
   }
 }
 

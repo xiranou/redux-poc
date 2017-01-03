@@ -7,8 +7,9 @@ function setup(store) {
 
   store.subscribe(() => {
     modules.map((mod, name) => {
-      const modWillUpdate = mod.get('willUpdate');
-      modWillUpdate(dispatch, getStoreState(store, name))
+      const modUpdate = mod.get('update');
+      const modState = getStoreState(store, name);
+      modUpdate(dispatch, modState);
     });
   });
 
