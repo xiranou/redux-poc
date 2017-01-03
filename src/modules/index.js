@@ -14,7 +14,8 @@ function mapDispatchToModules(dispatch) {
 }
 
 function mapDispatchToActionCreators(dispatch, actionCreators) {
-  return actionCreators.map(ac => (...args) => dispatch(ac(...args)));
+  const mapDispatch = (ac) => (...args) => dispatch( ac(...args) );
+  return actionCreators.map(ac => mapDispatch(ac));
 }
 
 function getModules(dispatch) {
@@ -25,4 +26,6 @@ function getModules(dispatch) {
   return modulesWithDispatch;
 }
 
-module.exports = getModules;
+module.exports = {
+  getModules
+};

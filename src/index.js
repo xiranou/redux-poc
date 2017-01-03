@@ -1,4 +1,4 @@
-const getModules = require('./modules');
+const { getModules } = require('./modules');
 
 // redux store binding
 function setup(store) {

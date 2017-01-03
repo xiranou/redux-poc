@@ -1,5 +1,5 @@
-const combineReducers = require('redux').combineReducers;
-const counter = require('./modules/counter').reducer;
+const { combineReducers } = require('redux');
+const { reducer: counter } = require('./modules/counter');
 
 module.exports = combineReducers({
   counter
