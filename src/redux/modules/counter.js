@@ -5,18 +5,32 @@ const INCREMENT = 'counter/increment';
 const DECREMENT = 'counter/decrement';
 
 // action creators
-function increment(amount = 1) {
+function _increment(amount) {
   return {
     type: INCREMENT,
     amount
   };
 }
 
-function decrement(amount = 1) {
+function _decrement(amount) {
   return {
     type: DECREMENT,
     amount
   };
+}
+
+function increment(amount = 1) {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(_increment(amount));
+    }, 200);
+  }
+}
+
+function decrement(amount) {
+  return dispatch => {
+    dispatch(_decrement(amount));
+  }
 }
 
 // reducer
