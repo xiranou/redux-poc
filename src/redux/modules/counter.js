@@ -5,33 +5,47 @@ const INCREMENT = 'counter/increment';
 const DECREMENT = 'counter/decrement';
 
 // action creators
-function _increment(amount) {
+function increment(amount) {
   return {
     type: INCREMENT,
     amount
   };
 }
 
-function _decrement(amount) {
+function decrement(amount) {
   return {
     type: DECREMENT,
     amount
   };
 }
 
-function increment(amount = 1) {
+// action creator thunks
+function increase(amount = 1) {
   return dispatch => {
-    setTimeout(() => {
-      dispatch(_increment(amount));
-    }, 300);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        dispatch(increment(amount));
+        return resolve();
+      }, 300);
+    });
   }
 }
 
-function decrement(amount) {
+function decrease(amount = 1) {
   return dispatch => {
-    setTimeout(() => {
-      dispatch(_decrement(amount));
-    }, 200);
+    return new Promise(resolve => {
+      setTimeout(() => {
+        dispatch(decrement(amount));
+        return resolve();
+      }, 200);
+    });
+  }
+}
+
+function increaseThenDecrease(amount = 1) {
+  return dispatch => {
+    return dispatch(increase(amount))
+    .then(() => dispatch(decrease(amount)));
   }
 }
 
@@ -50,7 +64,8 @@ function reducer(state = initialState, action = {}) {
 module.exports = {
   reducer,
   actionCreators: {
-    increment,
-    decrement
+    increase,
+    decrease,
+    increaseThenDecrease
   }
 }

@@ -16,7 +16,7 @@ function mapDispatchToModules(dispatch) {
 function mapDispatchToActionCreators(dispatch, actionCreators) {
   function mapDispatch(actionCreator) {
     return (...args) => {
-      return Promise.resolve(dispatch(actionCreator(...args)));
+      return dispatch(actionCreator(...args));
     }
   }
   return actionCreators.map(ac => mapDispatch(ac));
