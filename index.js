@@ -5,12 +5,19 @@ const setupAutomator = require('./src');
 
 const store = createStore(reducer);
 const automator = setupAutomator(store);
-const counter = automator.modules.counter;
+const { counter, chat } = automator.modules;
 
-counter.increaseThenDecrease(1)
-.then(() => {
-  console.log('======')
-  counter.increase()
-  .then(() => counter.increase(3))
-  .then(() => counter.decrease(2));
-});
+// counter.increaseThenDecrease(1)
+// .then(() => {
+//   console.log('======')
+//   counter.increase()
+//   .then(() => counter.increase(3))
+//   .then(() => counter.decrease(2));
+// });
+
+const slackPayload = {
+  user: '@UUUUU',
+  message: 'some message'
+};
+
+chat.sendMessage(slackPayload.message);
