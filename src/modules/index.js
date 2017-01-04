@@ -3,7 +3,8 @@ const counter = require('./counter');
 const chat = require('./chat');
 
 const modules = Immutable.fromJS({
-  counter
+  counter,
+  chat
 });
 
 let modulesWithDispatch;

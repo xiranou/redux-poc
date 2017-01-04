@@ -8,14 +8,10 @@ function setup(store) {
   const modules = getModules(dispatch, store);
 
   store.subscribe(() => {
-    console.log('app state updated!');
     const appState = Immutable.fromJS(store.getState());
-
     modules.map((mod, moduleName) => {
       const newModState = appState.get(moduleName);
-      if (!mod.state.equals(newModState)) {
-        mod.update(newModState);
-      }
+      mod.update(newModState);
     });
   });
 

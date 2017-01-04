@@ -9,15 +9,13 @@ module.exports = class Chat extends Base {
     this.sendMessageToSlack = this.sendMessageToSlack.bind(this);
   }
 
-  update(newState) {
-    super.udpate(newState);
-
+  willUpdate(prev, curr) {
     this.sendMessageToSlack()
   }
 
 
   sendMessageToSlack() {
     const messageToSend = this.state.get('messageToSend');
-    console.log(`I will send this message: ${messageToSend}`);
+    console.log(`I will send this message to chat: ${messageToSend}`);
   }
 }

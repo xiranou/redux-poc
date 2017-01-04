@@ -1,4 +1,3 @@
-const Immutable = require('immutable');
 const reducer = require('./src/redux/reducer');
 const createStore = require('./src/redux/create');
 const setupAutomator = require('./src');
@@ -17,11 +16,13 @@ const { counter, chat } = automator.modules;
 // });
 
 // Example 2
-// const slackPayload = {
-//   user: '@UUUUU',
-//   message: 'some message'
-// };
+const slackPayload = {
+  user: '@UUUUU',
+  message: 'some message'
+};
 
 // chat.sendMessage(slackPayload.message)
 // .then(() => counter.increase(1))
 // .then(() => counter.decrease(1));
+
+counter.increaseThenSendMessage(1, counter.state.get('count'));

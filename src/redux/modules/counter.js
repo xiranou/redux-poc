@@ -1,6 +1,11 @@
 const Immutable = require('immutable');
 
-const initialState = Immutable.Map({ count: 0 });
+const { actionCreators: { sendMessage } } = require('./chat');
+
+const initialState = Immutable.Map({
+  count: 0
+});
+
 const INCREMENT = 'counter/increment';
 const DECREMENT = 'counter/decrement';
 
@@ -49,6 +54,13 @@ function increaseThenDecrease(amount = 1) {
   }
 }
 
+function increaseThenSendMessage(amount = 1, messageToSend) {
+  return dispatch => {
+    return dispatch(increase(amount))
+    .then(() => dispatch(sendMessage(messageToSend)));
+  }
+}
+
 // reducer
 function reducer(state = initialState, action = {}) {
   switch(action.type) {
@@ -66,6 +78,7 @@ module.exports = {
   actionCreators: {
     increase,
     decrease,
-    increaseThenDecrease
+    increaseThenDecrease,
+    increaseThenSendMessage
   }
 }

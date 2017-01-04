@@ -3,13 +3,18 @@ const Immutable = require('immutable');
 const initialState = Immutable.Map({
   messageToSend: null
 });
+
 const SEND_MESSAGE = 'chat/send_message';
 
-function sendMessage(message) {
+function sendMessagePayload(payload) {
   return {
     type: SEND_MESSAGE,
-    payload: message
+    payload
   }
+}
+
+function sendMessage(message) {
+  return dispatch => dispatch(sendMessagePayload(message));
 }
 
 function reducer(state = initialState, action = {}) {
