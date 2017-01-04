@@ -1,26 +1,25 @@
-const Immutable = require('immutable');
+const Base = require('./base');
 
 const { actionCreators } = require('../redux/modules/counter');
 const { actionCreators: { sendMessage } } = require('../redux/modules/chat');
 
-let currentState = Immutable.Map({
-  count: 0
-});
+module.exports = class Counter extends Base {
+  constructor(dispatch, state) {
+    super(dispatch, state, actionCreators);
 
-function update(dispatch, state) {
-  if (!currentState.equals(state)) {
-    currentState = state;
-    displayNewCount(dispatch, state.get('count'));
+    this.displayNewCount = this.displayNewCount.bind(this);
   }
-}
 
-function displayNewCount(dispatch, count) {
-  const messageToSend = `UPDATE WITH NEW COUNT: ${count}`;
-  dispatch(sendMessage(messageToSend));
-}
+  update(newState) {
+    super.update(newState);
 
-module.exports = {
-  update,
-  actionCreators,
-  someProp: 'someProp'
+    this.displayNewCount();
+  }
+
+  displayNewCount() {
+    const count = this.state.get('count');
+    const messageToSend = `UPDATE WITH NEW COUNT: ${count}`;
+    // console.log(messageToSend);
+    this.dispatch(sendMessage(messageToSend));
+  }
 }

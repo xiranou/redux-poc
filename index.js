@@ -17,11 +17,11 @@ const { counter, chat } = automator.modules;
 // });
 
 // Example 2
-const slackPayload = {
-  user: '@UUUUU',
-  message: 'some message'
-};
+// const slackPayload = {
+//   user: '@UUUUU',
+//   message: 'some message'
+// };
 
-chat.sendMessage(slackPayload.message)
-.then(() => counter.increase(1))
-.then(() => counter.decrease(1));
+// chat.sendMessage(slackPayload.message)
+// .then(() => counter.increase(1))
+// .then(() => counter.decrease(1));

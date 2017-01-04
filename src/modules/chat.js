@@ -1,23 +1,23 @@
-const Immutable = require('immutable');
+const Base = require('./base');
 
 const { actionCreators } = require('../redux/modules/chat');
-const { sendMessage } = actionCreators;
 
-let currentState = Immutable.Map();
+module.exports = class Chat extends Base {
+  constructor(dispatch, state) {
+    super(dispatch, state, actionCreators);
 
-function update(dispatch, state) {
-  if (!currentState.equals(state)) {
-    currentState = state;
-    const messageToSend = state.get('messageToSend');
-    sendMessageToSlack(messageToSend);
+    this.sendMessageToSlack = this.sendMessageToSlack.bind(this);
   }
-}
 
-function sendMessageToSlack(messageToSend) {
-  console.log(`I will send this message: ${messageToSend}`);
-}
+  update(newState) {
+    super.udpate(newState);
 
-module.exports = {
-  update,
-  actionCreators
+    this.sendMessageToSlack()
+  }
+
+
+  sendMessageToSlack() {
+    const messageToSend = this.state.get('messageToSend');
+    console.log(`I will send this message: ${messageToSend}`);
+  }
 }

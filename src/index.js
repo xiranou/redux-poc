@@ -1,15 +1,21 @@
+const Immutable = require('immutable');
+
 const { getModules } = require('./modules');
 
 // redux store binding
 function setup(store) {
   const dispatch = store.dispatch;
-  const modules = getModules(dispatch);
+  const modules = getModules(dispatch, store);
 
   store.subscribe(() => {
-    modules.map((mod, name) => {
-      const modUpdate = mod.get('update');
-      const modState = getStoreState(store, name);
-      modUpdate(dispatch, modState);
+    console.log('app state updated!');
+    const appState = Immutable.fromJS(store.getState());
+
+    modules.map((mod, moduleName) => {
+      const newModState = appState.get(moduleName);
+      if (!mod.state.equals(newModState)) {
+        mod.update(newModState);
+      }
     });
   });
 
