@@ -33,13 +33,6 @@ function decrease(amount = 1) {
   return dispatch => dispatch(decrement(amount));
 }
 
-function increaseThenDecrease(amount = 1) {
-  return dispatch => {
-    return dispatch(increase(amount))
-    .then(() => dispatch(decrease(amount)));
-  }
-}
-
 // reducer
 function reducer(state = initialState, action = {}) {
   switch(action.type) {
@@ -56,7 +49,6 @@ module.exports = {
   reducer,
   actionCreators: {
     increase,
-    decrease,
-    increaseThenDecrease
+    decrease
   }
 }

@@ -4,16 +4,17 @@ const setupAutomator = require('./src');
 
 const store = createStore(reducer);
 const automator = setupAutomator(store);
-const { counter, chat } = automator.modules;
+const {
+  counter,
+  chat,
+  auth,
+  commander
+} = automator.modules;
 
 // Example 1
-// counter.increaseThenDecrease(1)
-// .then(() => {
-//   console.log('======')
-//   counter.increase()
-//   .then(() => counter.increase(3))
-//   .then(() => counter.decrease(2));
-// });
+counter.actions.increase()
+.then(() => counter.actions.increase(3))
+.then(() => counter.actions.decrease(2));
 
 // Example 2
 const slackPayload = {
@@ -21,8 +22,8 @@ const slackPayload = {
   message: 'some message'
 };
 
-// chat.sendMessage(slackPayload.message)
-// .then(() => counter.increase(1))
-// .then(() => counter.decrease(1));
+// basic flow
 
-counter.actions.increase(1);
+// auth.getPermission(slackPayload)
+// .then(commander.run)
+// .then(chat.sendMessage)

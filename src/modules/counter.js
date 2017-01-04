@@ -11,12 +11,6 @@ module.exports = class Counter extends Base {
     this.displayNewCount = this.displayNewCount.bind(this);
   }
 
-  update(...args) {
-    super.update(...args);
-
-    console.log('counter update');
-  }
-
   didUpdate() {
     this.displayNewCount();
   }
@@ -24,7 +18,11 @@ module.exports = class Counter extends Base {
   displayNewCount() {
     const count = this.state.get('count');
     const messageToSend = `UPDATE WITH NEW COUNT: ${count}`;
-    // console.log(messageToSend);
+
     this.dispatch(sendMessage(messageToSend));
+  }
+
+  mookie() {
+    this.dispatch(sendMessage('mookie'));
   }
 }

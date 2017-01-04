@@ -9,12 +9,6 @@ module.exports = class Chat extends Base {
     this.sendMessageToSlack = this.sendMessageToSlack.bind(this);
   }
 
-  update(...args) {
-    super.update(...args);
-
-    console.log('chat update');
-  }
-
   didUpdate(prev, curr) {
     this.sendMessageToSlack()
   }
