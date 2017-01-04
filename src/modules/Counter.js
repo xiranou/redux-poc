@@ -1,4 +1,4 @@
-const Base = require('./base');
+const Base = require('./Base');
 
 const { actionCreators } = require('../redux/modules/counter');
 const { actionCreators: { sendMessage } } = require('../redux/modules/chat');

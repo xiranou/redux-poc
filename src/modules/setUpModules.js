@@ -1,10 +1,10 @@
 const Immutable = require('immutable');
-const counter = require('./counter');
-const chat = require('./chat');
+const Counter = require('./Counter');
+const Chat = require('./Chat');
 
-const modules = Immutable.fromJS({
-  counter,
-  chat
+const Modules = Immutable.fromJS({
+  Counter,
+  Chat
 });
 
 let modulesWithDispatch;
@@ -12,13 +12,13 @@ let modulesWithDispatch;
 function setUpModules(dispatch, store) {
   const state = Immutable.fromJS(store.getState());
 
-  return modules.map(Mod => {
+  return Modules.reduce((modules, Mod) => {
     const moduleName = Mod.name.toLowerCase();
     const modState = state.get(moduleName, Immutable.Map());
-    const module = new Mod(dispatch, modState);
+    const moduleInstance = new Mod(dispatch, modState);
 
-    return module;
-  });
+    return modules.set(moduleName, moduleInstance);
+  }, Immutable.Map());
 }
 
 module.exports = {
