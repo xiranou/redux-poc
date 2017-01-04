@@ -9,10 +9,15 @@ module.exports = class Chat extends Base {
     this.sendMessageToSlack = this.sendMessageToSlack.bind(this);
   }
 
-  willUpdate(prev, curr) {
-    this.sendMessageToSlack()
+  update(...args) {
+    super.update(...args);
+
+    console.log('chat update');
   }
 
+  didUpdate(prev, curr) {
+    this.sendMessageToSlack()
+  }
 
   sendMessageToSlack() {
     const messageToSend = this.state.get('messageToSend');

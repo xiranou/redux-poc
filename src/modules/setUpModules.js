@@ -9,7 +9,7 @@ const modules = Immutable.fromJS({
 
 let modulesWithDispatch;
 
-function getModules(dispatch, store) {
+function setUpModules(dispatch, store) {
   const state = Immutable.fromJS(store.getState());
 
   return modules.map(Mod => {
@@ -22,5 +22,5 @@ function getModules(dispatch, store) {
 }
 
 module.exports = {
-  getModules
+  setUpModules
 };

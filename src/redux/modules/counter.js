@@ -6,8 +6,8 @@ const initialState = Immutable.Map({
   count: 0
 });
 
-const INCREMENT = 'counter/increment';
-const DECREMENT = 'counter/decrement';
+const INCREMENT = '@COUNTER/INCREMENT';
+const DECREMENT = '@COUNTER/DECREMENT';
 
 // action creators
 function increment(amount) {
@@ -26,38 +26,17 @@ function decrement(amount) {
 
 // action creator thunks
 function increase(amount = 1) {
-  return dispatch => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        dispatch(increment(amount));
-        return resolve();
-      }, 300);
-    });
-  }
+  return dispatch => dispatch(increment(amount));
 }
 
 function decrease(amount = 1) {
-  return dispatch => {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        dispatch(decrement(amount));
-        return resolve();
-      }, 200);
-    });
-  }
+  return dispatch => dispatch(decrement(amount));
 }
 
 function increaseThenDecrease(amount = 1) {
   return dispatch => {
     return dispatch(increase(amount))
     .then(() => dispatch(decrease(amount)));
-  }
-}
-
-function increaseThenSendMessage(amount = 1, messageToSend) {
-  return dispatch => {
-    return dispatch(increase(amount))
-    .then(() => dispatch(sendMessage(messageToSend)));
   }
 }
 
@@ -78,7 +57,6 @@ module.exports = {
   actionCreators: {
     increase,
     decrease,
-    increaseThenDecrease,
-    increaseThenSendMessage
+    increaseThenDecrease
   }
 }

@@ -4,7 +4,7 @@ const initialState = Immutable.Map({
   messageToSend: null
 });
 
-const SEND_MESSAGE = 'chat/send_message';
+const SEND_MESSAGE = '@CHAT/SEND_MESSAGE';
 
 function sendMessagePayload(payload) {
   return {

@@ -1,46 +1,40 @@
-const Immutable = require('immutable');
+const { bindActionCreators } = require('redux');
 
 module.exports = class Base {
   constructor(dispatch, state, actionCreators) {
-    this.dispatch = dispatch;
     this.state = state;
-
-    this.mapActionCreators.call(this, actionCreators);
+    this.dispatch = dispatch;
+    this.actions = bindActionCreators(actionCreators, this.dispatch);
 
     this.update = this.update.bind(this);
     this.shouldUpdate = this.shouldUpdate.bind(this);
     this.willUpdate = this.willUpdate.bind(this);
-    this.bindActionCreatorWithDispatch = this.bindActionCreatorWithDispatch.bind(this);
   }
 
-  update(newState) {
+  update(nextState) {
     const currentState = this.state;
-    const shouldUpdate = this.shouldUpdate(currentState, newState)
+    const shouldUpdate = this.shouldUpdate(currentState, nextState)
 
     if ( shouldUpdate ) {
-      this.state = newState;
+      this.willUpdate(currentState, nextState);
 
-      this.willUpdate(currentState, newState);
+      this.state = this.state.mergeDeep(nextState);
+
+      this.didUpdate(currentState, nextState);
     };
 
-    return newState;
+    return nextState;
   }
 
-  shouldUpdate(currentState, newState) {
-    return !currentState.equals(newState);
+  shouldUpdate(currentState, nextState) {
+    return !currentState.equals(nextState);
   }
 
-  willUpdate(prevState, currentState) {
+  willUpdate(currentState, nextState) {
     return currentState;
   }
 
-  mapActionCreators(actionCreators) {
-    Immutable.fromJS(actionCreators).map((ac, name) => {
-      this[name] = this.bindActionCreatorWithDispatch(ac)
-    });
-  }
-
-  bindActionCreatorWithDispatch(ac) {
-    return (...args) => Promise.resolve( this.dispatch( ac(...args) ) );
+  didUpdate(prevState, currentState) {
+    return currentState;
   }
 }

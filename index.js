@@ -25,4 +25,4 @@ const slackPayload = {
 // .then(() => counter.increase(1))
 // .then(() => counter.decrease(1));
 
-counter.increaseThenSendMessage(1, counter.state.get('count'));
+counter.actions.increase(1);
