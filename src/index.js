@@ -7,13 +7,15 @@ function setup(store) {
   const dispatch = store.dispatch;
   const modules = setUpModules(dispatch, store);
 
-  store.subscribe(() => {
+  const unsubscribe = store.subscribe(() => {
     const appState = Immutable.fromJS(store.getState());
     modules.map((mod, moduleName) => {
       const nextModState = appState.get(moduleName, null);
       mod.update(nextModState);
     });
   });
+
+  unsubscribe();
 
   return {
     modules: modules.toJS()
