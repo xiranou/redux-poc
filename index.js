@@ -16,13 +16,25 @@ const {
 // .then(() => counter.actions.decrease(2));
 
 // Example 2
-const slackPayload = {
-  user: '@UUUU',
-  room: '@RRRR',
-  message: '@cns deploy ci'
-};
+// const slackPayload = {
+//   user: '@UUUU',
+//   room: '@RRRR',
+//   message: '@cns deploy ci'
+// };
 
-monitor.actions.newPayloadRecieved(slackPayload)
+const _monitor = {
+  handlePayload: (payloadHandler) => {
+    const slackPayload = {
+      user: '@UUUU',
+      room: '@RRRR',
+      message: '@cns deploy ci'
+    };
+
+    payloadHandler(slackPayload);
+  }
+}
+
+monitor.subscribeTo(_monitor);
 
 
 // basic flow

@@ -1,6 +1,6 @@
 const Immutable = require('immutable');
 
-const initialState = Immutable.fromJS({
+const initialState = Immutable.Map({
   payload: null
 });
 

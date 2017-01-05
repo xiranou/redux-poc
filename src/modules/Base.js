@@ -49,7 +49,7 @@ module.exports = class Base {
 
   setupActionCreators(actionCreators = require(`../redux/modules/${this.constructor.name.toLowerCase()}`).actionCreators) {
     if (actionCreators)
-      this._actions = this.bindActionCreators(acs, this.dispatch);
+      this._actions = this.bindActionCreators(actionCreators, this.dispatch);
   }
 
   bindActionCreators(actionCreators) {
