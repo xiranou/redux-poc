@@ -1,12 +1,11 @@
 const Base = require('./Base');
 
-const { actionCreators } = require('../redux/modules/counter');
 const { actionCreators: { sendMessage } } = require('../redux/modules/chat');
 
 
 module.exports = class Counter extends Base {
   constructor(dispatch, state) {
-    super(dispatch, state, actionCreators);
+    super(dispatch, state);
 
     this.displayNewCount = this.displayNewCount.bind(this);
   }

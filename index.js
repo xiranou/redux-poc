@@ -7,23 +7,26 @@ const automator = setupAutomator(store);
 const {
   counter,
   chat,
-  auth,
-  commander
+  monitor
 } = automator.modules;
 
 // Example 1
-counter.actions.increase()
-.then(() => counter.actions.increase(3))
-.then(() => counter.actions.decrease(2));
+// counter.actions.increase()
+// .then(() => counter.actions.increase(3))
+// .then(() => counter.actions.decrease(2));
 
 // Example 2
 const slackPayload = {
-  user: '@UUUUU',
-  message: 'some message'
+  user: '@UUUU',
+  room: '@RRRR',
+  message: '@cns deploy ci'
 };
+
+monitor.actions.newPayloadRecieved(slackPayload)
+
 
 // basic flow
 
-// auth.getPermission(slackPayload)
+// auth.getUserPermissionByID(slackPayload.user)
 // .then(commander.run)
 // .then(chat.sendMessage)

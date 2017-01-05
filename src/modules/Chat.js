@@ -1,10 +1,8 @@
 const Base = require('./Base');
 
-const { actionCreators } = require('../redux/modules/chat');
-
 module.exports = class Chat extends Base {
   constructor(dispatch, state) {
-    super(dispatch, state, actionCreators);
+    super(dispatch, state);
 
     this.sendMessageToSlack = this.sendMessageToSlack.bind(this);
   }
