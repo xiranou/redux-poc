@@ -22,9 +22,9 @@ module.exports = class Base {
     const currentState = this.state;
     const shouldUpdate = this.shouldUpdate(currentState, nextState)
 
+
     if ( shouldUpdate ) {
       this.willUpdate(currentState, nextState);
-
       // dear javascript
       Promise.resolve(this.state = nextState)
       .then(() => {

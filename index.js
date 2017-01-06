@@ -16,3 +16,4 @@ const {
 } = automator.modules;
 
 monitor.addSubscriber(automator);
+monitor.start();

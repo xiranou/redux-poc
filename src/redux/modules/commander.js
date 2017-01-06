@@ -21,7 +21,8 @@ function run(command, permission) {
     const commandMeta = Immutable.fromJS({
       command,
       permission,
-      context
+      context,
+      timeStamp: new Date()
     });
     dispatch(recievedCommandWithPermission(commandMeta, permission))
   }

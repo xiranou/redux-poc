@@ -6,6 +6,16 @@ let payloads = Immutable.List([
     user: '@UUUU',
     room: '@RRRR',
     message: '@cns deploy ci'
+  },
+  {
+    user: '@UUUU',
+    room: '@RRRR',
+    message: '@cns deploy ci'
+  },
+  {
+    user: '@PPPP',
+    room: '@RRRR',
+    message: '@cns deploy ci'
   }
 ]);
 
@@ -25,24 +35,15 @@ function popPayloadQueue() {
   payloads = payloads.pop();
 }
 
-function reStart() {
-  if (payloads.size > 0) {
+function start() {
+  console.log('--- monitor start sending payload ---');
+  const subscriber = findReadySubscriber();
+  if (subscriber && payloads.size > 0) {
+    sendPayload(subscriber);
+    popPayloadQueue();
     setTimeout(start, 1000);
   }
 }
-
-function start() {
-  console.log('---monitor start sending payload---');
-  const subscriber = findReadySubscriber();
-  if (subscriber) {
-    sendPayload(subscriber);
-    popPayloadQueue();
-  } else {
-    reStart();
-  }
-}
-
-start();
 
 module.exports = {
   start,
