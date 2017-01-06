@@ -1,10 +1,19 @@
 const Base = require('./Base');
 const { actionCreators: { sendMessage } } = require('../redux/modules/chat');
 
+// mock commander
+const commander = {
+  run: (command, permission) => {
+    console.log('...commander runs the command');
+    return Promise.resolve()
+  }
+}
+
 module.exports = class Automator extends Base {
-  constructor(dispatch, state) {
+  constructor(dispatch, state, modules = {}) {
     super(dispatch, state);
 
+    this.modules = modules
     this.subscribeTo = this.subscribeTo.bind(this);
   }
 
@@ -32,19 +41,11 @@ module.exports = class Automator extends Base {
     commander.run(command, permission)
     .then(() => {
       console.log('...send message to chat');
-      this.dispatch(sendMessage('!!!commmand complete!!!'));
+      this.modules.chat.actions.sendMessage('!!!commmand complete!!!');
     });
   }
 
   subscribeTo(monitor) {
     monitor.handlePayload(this.actions.newPayloadRecieved);
-  }
-}
-
-// mock commander
-const commander = {
-  run: (command, permission) => {
-    console.log('...commander runs the command');
-    return Promise.resolve()
   }
 }

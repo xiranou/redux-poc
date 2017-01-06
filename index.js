@@ -1,13 +1,17 @@
 const reducer = require('./src/redux/reducer');
 const createStore = require('./src/redux/create');
-const setupAutomator = require('./src');
+const connectAndInstantiate = require('./src/redux/connect');
+const setUpModules = require('./src/modules/setUpModules');
+const Automator = require('./src/modules/Automator');
 
 const store = createStore(reducer);
-const automator = setupAutomator(store);
+const modules = setUpModules(store);
+
+const automator = connectAndInstantiate(Automator, store, modules);
+
 const {
   counter,
-  chat,
-  automator: _automator
+  chat
 } = automator.modules;
 
 // Example 1
@@ -16,11 +20,11 @@ const {
 // .then(() => counter.actions.decrease(2));
 
 // Example 2
-// const slackPayload = {
-//   user: '@UUUU',
-//   room: '@RRRR',
-//   message: '@cns deploy ci'
-// };
+const slackPayload = {
+  user: '@UUUU',
+  room: '@RRRR',
+  message: '@cns deploy ci'
+};
 
 const monitor = {
   handlePayload: (payloadHandler) => {
@@ -34,7 +38,7 @@ const monitor = {
   }
 }
 
-_automator.subscribeTo(monitor);
+automator.subscribeTo(monitor);
 
 
 // basic flow

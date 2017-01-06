@@ -1,26 +1,20 @@
 const Immutable = require('immutable');
+const connectAndInstantiate = require('../redux/connect');
 const Counter = require('./Counter');
 const Chat = require('./Chat');
-const Automator = require('./Automator');
 
 const Modules = Immutable.fromJS({
   Counter,
-  Chat,
-  Automator
+  Chat
 });
 
-function setUpModules(dispatch, store) {
+module.exports = function setUpModules(store) {
   const state = Immutable.fromJS(store.getState());
 
   return Modules.reduce((modules, Mod) => {
-    const moduleName = Mod.name.toLowerCase();
-    const modState = state.get(moduleName, Immutable.Map());
-    const moduleInstance = new Mod(dispatch, modState);
+    const moduleInstance = connectAndInstantiate(Mod, store);
+    const moduleName = moduleInstance.constructor.name.toLowerCase();
 
     return modules.set(moduleName, moduleInstance);
-  }, Immutable.Map());
+  }, Immutable.Map()).toJS();
 }
-
-module.exports = {
-  setUpModules
-};
