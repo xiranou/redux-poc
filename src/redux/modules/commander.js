@@ -22,8 +22,9 @@ function run(command, permission) {
       command,
       permission,
       context,
-      timeStamp: new Date()
+      timeStamp: Date.now()
     });
+
     dispatch(recievedCommandWithPermission(commandMeta, permission))
   }
 }

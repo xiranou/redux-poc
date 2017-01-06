@@ -36,9 +36,9 @@ function popPayloadQueue() {
 }
 
 function start() {
-  console.log('--- monitor start sending payload ---');
   const subscriber = findReadySubscriber();
   if (subscriber && payloads.size > 0) {
+    console.log('\n--- monitor start sending payload ---\n');
     sendPayload(subscriber);
     popPayloadQueue();
     setTimeout(start, 1000);
