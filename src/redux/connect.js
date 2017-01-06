@@ -7,10 +7,5 @@ module.exports = function connectAndInstantiate(Module, store, modules) {
   const moduleInitialState = state.get(moduleName, Immutable.Map());
   const modInstance = new Module(dispatch, moduleInitialState, modules);
 
-  store.subscribe(() => {
-    const nextState = Immutable.fromJS(store.getState()).get(moduleName);
-    modInstance.willRecieveState(nextState);
-  });
-
   return modInstance;
 }

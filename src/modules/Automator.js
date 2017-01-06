@@ -1,3 +1,4 @@
+const Immutable = require('immutable');
 const Base = require('./Base');
 const auth = require('../helpers/auth');
 
@@ -12,6 +13,17 @@ module.exports = class Automator extends Base {
 
   get ready() {
     return this.state.get('payload') === null;
+  }
+
+  willRecieveState(nextState) {
+    super.willRecieveState(nextState.get(this.constructor.name.toLowerCase()));
+
+    Immutable.Map(this.modules).map(mod => {
+      const modName = mod.constructor.name.toLowerCase();
+      const modState = nextState.get(modName);
+
+      mod.willRecieveState(modState);
+    });
   }
 
   didUpdate() {

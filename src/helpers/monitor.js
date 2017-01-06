@@ -41,7 +41,7 @@ function start() {
     console.log('\n--- monitor start sending payload ---\n');
     sendPayload(subscriber);
     popPayloadQueue();
-    setTimeout(start, 1000);
+    setTimeout(start, 500);
   }
 }
 
