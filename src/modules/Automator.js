@@ -1,23 +1,26 @@
 const Base = require('./Base');
 const auth = require('../helpers/auth');
 
-// mock commander
-const commander = {
-  run: (command, permission) => {
-    console.log('...commander runs the command');
-    return Promise.resolve()
-  }
-}
-
 module.exports = class Automator extends Base {
   constructor(dispatch, state, modules = {}) {
     super(dispatch, state);
 
     this.modules = modules
+    this.processPayload = this.processPayload.bind(this);
     this.subscribeTo = this.subscribeTo.bind(this);
   }
 
+  get ready() {
+    return this.state.get('payload') === null;
+  }
+
   didUpdate() {
+    if (this.state.get('payload')) {
+      this.processPayload();
+    }
+  }
+
+  processPayload() {
     const { user: userID, room: roomID, message } = this.state.get('payload');
     const { commander, chat } = this.modules;
 
@@ -27,7 +30,7 @@ module.exports = class Automator extends Base {
 
     auth.fetchPermissionByID(userID).then(permission => {
       console.log('...parse out the command');
-      // messageParser.parseCommand(payload)
+
       const command = {
         type: 'deploy',
         brand: 'atp',
@@ -41,6 +44,7 @@ module.exports = class Automator extends Base {
     })
     .then(() => {
       console.log('...payload is processed');
+      this.actions.clearPayload();
     });
   }
 

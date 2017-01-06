@@ -2,10 +2,10 @@ const Immutable = require('immutable');
 const { bindActionCreators: _bindActionCreators } = require('redux');
 
 module.exports = class Base {
-  constructor(dispatch, state = Immutable.Map(), actionCreators) {
+  constructor(dispatch, state = Immutable.Map()) {
     this.state = state;
     this.dispatch = dispatch;
-    this.setupActionCreators.call(this, actionCreators);
+    this.setupActionCreators.call(this);
 
     this.update = this.update.bind(this);
     this.shouldUpdate = this.shouldUpdate.bind(this);
@@ -36,7 +36,7 @@ module.exports = class Base {
   }
 
   shouldUpdate(currentState, nextState) {
-    return !currentState.equals(nextState);
+    return nextState !== null && !currentState.equals(nextState);
   }
 
   willUpdate(currentState, nextState) {
@@ -47,9 +47,13 @@ module.exports = class Base {
     return currentState;
   }
 
-  setupActionCreators(actionCreators = require(`../redux/modules/${this.constructor.name.toLowerCase()}`).actionCreators) {
-    if (actionCreators)
+  setupActionCreators() {
+    try {
+      const { actionCreators } = require(`../redux/modules/${this.constructor.name.toLowerCase()}`);
       this._actions = this.bindActionCreators(actionCreators, this.dispatch);
+    } catch(err) {
+      this._actions = {}
+    }
   }
 
   bindActionCreators(actionCreators) {
