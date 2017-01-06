@@ -7,7 +7,7 @@ module.exports = class Base {
     this.dispatch = dispatch;
     this.setupActionCreators.call(this);
 
-    this.update = this.update.bind(this);
+    this.willRecieveState = this.willRecieveState.bind(this);
     this.shouldUpdate = this.shouldUpdate.bind(this);
     this.willUpdate = this.willUpdate.bind(this);
     this.didUpdate = this.didUpdate.bind(this);
@@ -18,19 +18,14 @@ module.exports = class Base {
     return this._actions;
   }
 
-  update(nextState) {
+  willRecieveState(nextState) {
     const currentState = this.state;
     const shouldUpdate = this.shouldUpdate(currentState, nextState)
-
-
     if ( shouldUpdate ) {
       this.willUpdate(currentState, nextState);
-      // dear javascript
-      Promise.resolve(this.state = nextState)
-      .then(() => {
-        this.didUpdate(currentState, nextState);
-      });
-    };
+      updateState(this, nextState)
+      .then(() => this.didUpdate(currentState, nextState));
+    }
 
     return nextState;
   }
@@ -60,4 +55,8 @@ module.exports = class Base {
     const bound = Immutable.Map(_bindActionCreators(actionCreators, this.dispatch));
     return bound.map( ac => (...args) => Promise.resolve( ac(...args) ) ).toJS();
   }
+}
+
+function updateState(module, nextState) {
+  return Promise.resolve(module.state = nextState);
 }
