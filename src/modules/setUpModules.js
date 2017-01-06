@@ -2,10 +2,12 @@ const Immutable = require('immutable');
 const connectAndInstantiate = require('../redux/connect');
 const Counter = require('./Counter');
 const Chat = require('./Chat');
+const Commander = require('./Commander');
 
 const Modules = Immutable.fromJS({
   Counter,
-  Chat
+  Chat,
+  Commander
 });
 
 module.exports = function setUpModules(store) {

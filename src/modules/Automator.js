@@ -1,5 +1,5 @@
 const Base = require('./Base');
-const { actionCreators: { sendMessage } } = require('../redux/modules/chat');
+const auth = require('../helpers/auth');
 
 // mock commander
 const commander = {
@@ -19,29 +19,24 @@ module.exports = class Automator extends Base {
 
   didUpdate() {
     const { user: userID, room: roomID, message } = this.state.get('payload');
+    const { commander } = this.modules;
+
     console.log('...new payload recieved');
 
     console.log('...get user permission with auth');
-    // Auth.pingDBForUserPermission()
-    const permission = {
-      userID,
-      group: ['atp'],
-      userType: ['power-user']
-    };
 
-    console.log('...parse out the command');
-    // messageParser.parseCommand(payload)
-    const command = {
-      type: 'deploy',
-      brand: 'atp',
-      environment: 'ci'
-    };
+    auth.fetchPermissionByID(userID).then(permission => {
+      console.log('...parse out the command');
+      // messageParser.parseCommand(payload)
+      const command = {
+        type: 'deploy',
+        brand: 'atp',
+        environment: 'ci'
+      };
 
-    console.log('...run the command with commander');
-    commander.run(command, permission)
-    .then(() => {
-      console.log('...send message to chat');
-      this.modules.chat.actions.sendMessage('!!!commmand complete!!!');
+      console.log('...calls the commander to run the command');
+
+      commander.actions.run(command, permission)
     });
   }
 
