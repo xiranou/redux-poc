@@ -7,7 +7,7 @@ const automator = setupAutomator(store);
 const {
   counter,
   chat,
-  monitor
+  automator: _automator
 } = automator.modules;
 
 // Example 1
@@ -22,7 +22,7 @@ const {
 //   message: '@cns deploy ci'
 // };
 
-const _monitor = {
+const monitor = {
   handlePayload: (payloadHandler) => {
     const slackPayload = {
       user: '@UUUU',
@@ -34,7 +34,7 @@ const _monitor = {
   }
 }
 
-monitor.subscribeTo(_monitor);
+_automator.subscribeTo(monitor);
 
 
 // basic flow

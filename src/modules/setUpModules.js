@@ -1,12 +1,12 @@
 const Immutable = require('immutable');
 const Counter = require('./Counter');
 const Chat = require('./Chat');
-const Monitor = require('./Monitor');
+const Automator = require('./Automator');
 
 const Modules = Immutable.fromJS({
   Counter,
   Chat,
-  Monitor
+  Automator
 });
 
 function setUpModules(dispatch, store) {

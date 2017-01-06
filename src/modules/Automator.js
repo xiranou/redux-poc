@@ -1,7 +1,7 @@
 const Base = require('./Base');
 const { actionCreators: { sendMessage } } = require('../redux/modules/chat');
 
-module.exports = class Monitor extends Base {
+module.exports = class Automator extends Base {
   constructor(dispatch, state) {
     super(dispatch, state);
 
