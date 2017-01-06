@@ -19,7 +19,7 @@ module.exports = class Automator extends Base {
 
   didUpdate() {
     const { user: userID, room: roomID, message } = this.state.get('payload');
-    const { commander } = this.modules;
+    const { commander, chat } = this.modules;
 
     console.log('...new payload recieved');
 
@@ -36,7 +36,11 @@ module.exports = class Automator extends Base {
 
       console.log('...calls the commander to run the command');
 
-      commander.actions.run(command, permission)
+      commander.messenger = chat.actions;
+      return commander.actions.run(command, permission);
+    })
+    .then(() => {
+      console.log('...payload is processed');
     });
   }
 

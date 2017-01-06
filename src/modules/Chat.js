@@ -13,6 +13,6 @@ module.exports = class Chat extends Base {
 
   sendMessageToSlack() {
     const messageToSend = this.state.get('messageToSend');
-    console.log(`I will send this message to chat: ${messageToSend}`);
+    console.log(`Chat: I will send this message to chat: '${messageToSend}'`);
   }
 }
