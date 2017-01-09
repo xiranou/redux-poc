@@ -16,7 +16,7 @@ function run(command, permission) {
   return dispatch => {
     // @TODO:
     // fetch context from redis
-    // combine command with comtext to create meta
+    // combine command with context to create meta
     const context = getContext(command);
     const commandMeta = Immutable.fromJS({
       command,

@@ -14,17 +14,6 @@ module.exports = class Automator extends Base {
     return this.state.getIn(['automator', 'payload']) === null;
   }
 
-  willRecieveState(nextState) {
-    super.willRecieveState(nextState);
-
-    Immutable.Map(this.modules).map(mod => {
-      const modName = mod.constructor.name.toLowerCase();
-      const modState = nextState.get(modName);
-
-      mod.willRecieveState(modState);
-    });
-  }
-
   shouldUpdate(currentState, nextState) {
     return !currentState.get('automator').equals(nextState.get('automator'));
   }
@@ -33,15 +22,6 @@ module.exports = class Automator extends Base {
     if (this.state.getIn(['automator', 'payload'])) {
       this.processPayload();
     }
-  }
-
-  initializeModules(Modules) {
-    return Immutable.Map(Modules).reduce((modules, Mod) => {
-      const modName = Mod.name.toLowerCase();
-      const modState = this.state.get(modName);
-
-      return modules.set(modName, new Mod(this.dispatch, modState));
-    }, Immutable.Map()).toJS();
   }
 
   processPayload() {

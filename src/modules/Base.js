@@ -1,4 +1,6 @@
 const Immutable = require('immutable');
+const Optional = require('optional-js');
+
 const { bindActionCreators: _bindActionCreators } = require('redux');
 
 module.exports = class Base {
@@ -29,7 +31,15 @@ module.exports = class Base {
     if ( shouldUpdate ) {
       this.willUpdate(currentState, nextState);
       updateState(this, nextState)
-      .then(() => this.didUpdate(currentState, nextState));
+      .then(() => {
+        this.didUpdate(currentState, nextState);
+
+        Immutable.Map(this.modules).map(mod => {
+          const modName = mod.constructor.name.toLowerCase();
+          const modState = nextState.get(modName);
+          Optional.ofNullable(modState).map(modState => mod.willRecieveState(modState))
+        });
+      });
     }
 
     return nextState;
