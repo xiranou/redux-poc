@@ -11,5 +11,8 @@ const store = createStore(reducer);
 const automator = new Automator(store.dispatch, Immutable.fromJS(store.getState()), Modules);
 const unsubscribeFromStore = connect(store, automator.willRecieveState);
 
-monitor.addSubscriber(automator);
+monitor.addSubscriber({
+  ready: automator.ready,
+  callback: automator.actions.recieveNewPayload
+});
 monitor.start();

@@ -28,7 +28,7 @@ function findReadySubscriber() {
 }
 
 function sendPayload(subscriber) {
-  subscriber.actions.recieveNewPayload(payloads.last());
+  subscriber.callback(payloads.last());
 }
 
 function popPayloadQueue() {
