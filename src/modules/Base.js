@@ -14,6 +14,7 @@ module.exports = class Base {
     this.shouldUpdate = this.shouldUpdate.bind(this);
     this.willUpdate = this.willUpdate.bind(this);
     this.didUpdate = this.didUpdate.bind(this);
+    this.updateModules = this.updateModules.bind(this);
     this.bindActionCreators = this.bindActionCreators.bind(this);
   }
 
@@ -30,15 +31,10 @@ module.exports = class Base {
     const shouldUpdate = this.shouldUpdate(currentState, nextState)
     if ( shouldUpdate ) {
       this.willUpdate(currentState, nextState);
-      updateState(this, nextState)
-      .then(() => {
-        this.didUpdate(currentState, nextState);
 
-        Immutable.Map(this.modules).map(mod => {
-          const modName = mod.constructor.name.toLowerCase();
-          const modState = nextState.get(modName);
-          Optional.ofNullable(modState).map(modState => mod.willRecieveState(modState))
-        });
+      updateState(this, nextState).then(() => {
+        this.didUpdate(currentState, nextState);
+        this.updateModules(nextState);
       });
     }
 
@@ -64,6 +60,16 @@ module.exports = class Base {
 
       return modules.set(modName, new Mod(this.dispatch, modState));
     }, Immutable.Map()).toJS();
+  }
+
+  updateModules(nextState) {
+    Optional.ofNullable(this.modules).map(modules => {
+      Immutable.Map(modules).map(mod => {
+        const modName = mod.constructor.name.toLowerCase();
+        const modState = nextState.get(modName);
+        mod.willRecieveState(modState);
+      });
+    });
   }
 
   setupActionCreators() {
