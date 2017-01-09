@@ -2,10 +2,11 @@ const Immutable = require('immutable');
 const { bindActionCreators: _bindActionCreators } = require('redux');
 
 module.exports = class Base {
-  constructor(dispatch, state = Immutable.Map()) {
+  constructor(dispatch, state = Immutable.Map(), Modules = {}) {
     this.state = state;
     this.dispatch = dispatch;
-    this.setupActionCreators.call(this);
+    this._actions = this.setupActionCreators.call(this);
+    this._modules = this.initializeModules.call(this, Modules);
 
     this.willRecieveState = this.willRecieveState.bind(this);
     this.shouldUpdate = this.shouldUpdate.bind(this);
@@ -16,6 +17,10 @@ module.exports = class Base {
 
   get actions() {
     return this._actions;
+  }
+
+  get modules() {
+    return this._modules;
   }
 
   willRecieveState(nextState) {
@@ -42,12 +47,21 @@ module.exports = class Base {
     return currentState;
   }
 
+  initializeModules(Modules) {
+    return Immutable.Map(Modules).reduce((modules, Mod) => {
+      const modName = Mod.name.toLowerCase();
+      const modState = this.state.get(modName);
+
+      return modules.set(modName, new Mod(this.dispatch, modState));
+    }, Immutable.Map()).toJS();
+  }
+
   setupActionCreators() {
     try {
       const { actionCreators } = require(`../redux/modules/${this.constructor.name.toLowerCase()}`);
-      this._actions = this.bindActionCreators(actionCreators, this.dispatch);
+      return this.bindActionCreators(actionCreators, this.dispatch);
     } catch(err) {
-      this._actions = {}
+      return {}
     }
   }
 

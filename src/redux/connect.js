@@ -1,11 +1,18 @@
 const Immutable = require('immutable');
 
-module.exports = function connectAndInstantiate(Module, store, modules) {
-  const dispatch = store.dispatch;
-  const state = Immutable.fromJS(store.getState());
-  const moduleName = Module.name.toLowerCase();
-  const moduleInitialState = state.get(moduleName, Immutable.Map());
-  const modInstance = new Module(dispatch, moduleInitialState, modules);
+module.exports = function connect(store, onChange) {
+  let currentState;
 
-  return modInstance;
+  function handleChange() {
+    let nextState = store.getState();
+    if (nextState !== currentState) {
+      currentState = nextState;
+      onChange(Immutable.fromJS(currentState));
+    }
+  }
+
+  const unsubscribe = store.subscribe(handleChange);
+  handleChange();
+
+  return unsubscribe;
 }

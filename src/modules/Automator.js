@@ -3,10 +3,9 @@ const Base = require('./Base');
 const auth = require('../helpers/auth');
 
 module.exports = class Automator extends Base {
-  constructor(dispatch, state, modules = {}) {
-    super(dispatch, state);
+  constructor(dispatch, state, Modules = {}) {
+    super(dispatch, state, Modules);
 
-    this.modules = modules
     this.processPayload = this.processPayload.bind(this);
     this.subscribeTo = this.subscribeTo.bind(this);
   }
@@ -30,6 +29,15 @@ module.exports = class Automator extends Base {
     if (this.state.get('payload')) {
       this.processPayload();
     }
+  }
+
+  initializeModules(Modules) {
+    return Immutable.Map(Modules).reduce((modules, Mod) => {
+      const modName = Mod.name.toLowerCase();
+      const modState = this.state.get(modName);
+
+      return modules.set(modName, new Mod(this.dispatch, modState));
+    }, Immutable.Map()).toJS();
   }
 
   processPayload() {
