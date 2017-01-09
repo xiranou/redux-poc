@@ -11,11 +11,11 @@ module.exports = class Automator extends Base {
   }
 
   get ready() {
-    return this.state.get('payload') === null;
+    return this.state.getIn(['automator', 'payload']) === null;
   }
 
   willRecieveState(nextState) {
-    super.willRecieveState(nextState.get(this.constructor.name.toLowerCase()));
+    super.willRecieveState(nextState);
 
     Immutable.Map(this.modules).map(mod => {
       const modName = mod.constructor.name.toLowerCase();
@@ -25,8 +25,12 @@ module.exports = class Automator extends Base {
     });
   }
 
+  shouldUpdate(currentState, nextState) {
+    return !currentState.get('automator').equals(nextState.get('automator'));
+  }
+
   didUpdate() {
-    if (this.state.get('payload')) {
+    if (this.state.getIn(['automator', 'payload'])) {
       this.processPayload();
     }
   }
@@ -41,7 +45,7 @@ module.exports = class Automator extends Base {
   }
 
   processPayload() {
-    const { user: userID, room: roomID, message } = this.state.get('payload');
+    const { user: userID, room: roomID, message } = this.state.getIn(['automator', 'payload']);
     const { commander, chat } = this.modules;
 
     console.log('...new payload recieved');
